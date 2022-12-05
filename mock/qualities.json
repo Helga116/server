@@ -1,0 +1,27 @@
+[
+    {
+        "_id": "67rdca3eeb7f6fgeed471198",
+        "name": "Джуниор студент",
+        "color": "primary"
+    },
+    {
+        "_id": "67rdca3eeb7f6fgeed471100",
+        "name": "Джуниор работающий",
+        "color": "secondary"
+    },
+    {
+        "_id": "67rdca3eeb7f6fgeed4711012",
+        "name": "Джуниор на стажировке",
+        "color": "success"
+    },
+    {
+        "_id": "67rdca3eeb7f6fgeed471101",
+        "name": "Джуниор почти Миддл",
+        "color": "danger"
+    },
+    {
+        "_id": "67rdca3eeb7f6fgeed471102",
+        "name": "Джуниор самоучка",
+        "color": "info"
+    }
+]
