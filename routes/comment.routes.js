@@ -1,9 +1,53 @@
-const express = require("express");
+const express = require('express')
+const auth = require('../middleware/auth.middleware')
+const comment = require('../models/Comment')
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router({mergeParams: true})
 
-router.get("/", async (req, res) => {});
-router.post("/", async (req, res) => {});
-router.delete("/:id", async (req, res) => {});
+router
+    .route('/')
+    .get(auth, async (req, res) => {
+        try {
+            const {orderBy, equalTo} = req.query
+            const list = await Comment.find({[orderBy]: equalTo})
+            res.send(list)
+        } catch (e) {
+            res.status(500).json({
+                message: 'На сервере произошла ошибка. Попробуйте позже'
+            })
+        }
+    })
+    .post(auth, async (req, res) => {
+        try {
+            const newComment = await Comment.create({
+                ...req.body,
+                userId: req.user._id
+            })
+            res.status(201).send(newComment)
+        } catch (e) {
+            res.status(500).json({
+                message: 'На сервере произошла ошибка. Попробуйте позже'
+            })
+        }
+    })
 
-module.exports = router;
+router.delete('/:commentId', auth, async (req, res) => {
+    try {
+        const {commentId} = req.params
+        const removedComment = Comment.findById(commentId)
+        // const removedComment = Comment.find({_id: commentId})
+        if(removedComment._id.toString() === req.user._id) {
+            removedComment.remove()
+            return res.send(null)
+        } else {
+            return res.status(401).json({message: 'Unauthorized'})
+        }
+
+    } catch (e) {
+        res.status(500).json({
+            message: 'На сервере произошла ошибка. Попробуйте позже'
+        })
+    }
+})
+
+module.exports = router
